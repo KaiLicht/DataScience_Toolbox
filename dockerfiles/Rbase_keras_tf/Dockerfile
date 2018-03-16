@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/tensorflow:18.01-py3
+FROM nvcr.io/nvidia/tensorflow:18.02-py3
 
 MAINTAINER Kai Lichtenberg <kai@sentin.ai>
 
