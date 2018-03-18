@@ -7,6 +7,7 @@ ENV PATH=/usr/lib/rstudio-server/bin:$PATH
 ## Symlink pandoc, pandoc-citeproc so they are available system-wide
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
+    apt-utils \
     file \
     git \
     libapparmor1 \
@@ -53,7 +54,7 @@ RUN apt-get update \
 	&& chown rstudio:rstudio /home/rstudio \
 	&& addgroup rstudio staff \
   ## Prevent rstudio from deciding to use /usr/bin/R if a user apt-get installs a package
-  &&  echo 'rsession-which-r=/usr/local/bin/R' >> /etc/rstudio/rserver.conf \
+  &&  echo 'rsession-which-r=/usr/bin/R' >> /etc/rstudio/rserver.conf \
   ## use more robust file locking to avoid errors when using shared volumes:
   && echo 'lock-type=advisory' >> /etc/rstudio/file-locks \ 
   ## configure git not to request password each time 
@@ -71,8 +72,7 @@ RUN apt-get update \
            > /etc/services.d/rstudio/finish
 
 COPY userconf.sh /etc/cont-init.d/userconf
-
-## running with "-e ADD=shiny" adds shiny server
+# running with "-e ADD=shiny" adds shiny server
 COPY add_shiny.sh /etc/cont-init.d/add
 
 COPY pam-helper.sh /usr/lib/rstudio-server/bin/pam-helper
