@@ -1,4 +1,4 @@
-FROM kailicht/rbase:1.0
+FROM kailicht/rbase_keras_tf:1.0
 
 ENV PATH=/usr/lib/rstudio-server/bin:$PATH
 
@@ -36,6 +36,7 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/ \
   ## RStudio wants an /etc/R, will populate from $R_HOME/etc
   && mkdir -p /etc/R \
+  && mkdir /usr/local/lib/R/etc/ \
   ## Write config files in $R_HOME/etc
   && echo '\n\
     \n# Configure httr to perform out-of-band authentication if HTTR_LOCALHOST \
@@ -46,7 +47,7 @@ RUN apt-get update \
     \n}' >> /usr/local/lib/R/etc/Rprofile.site \
   && echo "PATH=${PATH}" >> /usr/local/lib/R/etc/Renviron \
   ## Need to configure non-root user for RStudio
-  #&& useradd rstudio \
+  && useradd rstudio \
   && echo "rstudio:rstudio" | chpasswd \
 	&& mkdir /home/rstudio \
 	&& chown rstudio:rstudio /home/rstudio \
@@ -77,8 +78,5 @@ COPY add_shiny.sh /etc/cont-init.d/add
 COPY pam-helper.sh /usr/lib/rstudio-server/bin/pam-helper
 
 EXPOSE 8787
-
-## automatically link a shared volume for kitematic users
-VOLUME /home/rstudio/kitematic
 
 CMD ["/init"]
