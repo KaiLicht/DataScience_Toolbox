@@ -6,6 +6,7 @@ ENV PATH=/usr/lib/rstudio-server/bin:$PATH
 ## Attempts to get detect latest version, otherwise falls back to version given in $VER
 ## Symlink pandoc, pandoc-citeproc so they are available system-wide
 RUN apt-get update \
+  && echo docker:docker | chpasswd \
   && apt-get install -y --no-install-recommends \
     apt-utils \
     file \
@@ -48,11 +49,11 @@ RUN apt-get update \
     \n}' >> /usr/local/lib/R/etc/Rprofile.site \
   && echo "PATH=${PATH}" >> /usr/local/lib/R/etc/Renviron \
   ## Need to configure non-root user for RStudio
-  && useradd rstudio \
-  && echo "rstudio:rstudio" | chpasswd \
-	&& mkdir /home/rstudio \
-	&& chown rstudio:rstudio /home/rstudio \
-	&& addgroup rstudio staff \
+  #&& useradd rstudio \
+  #&& echo "rstudio:rstudio" | chpasswd \
+	#&& mkdir /home/rstudio \
+	#&& chown rstudio:rstudio /home/rstudio \
+	#&& addgroup rstudio staff \
   ## Prevent rstudio from deciding to use /usr/bin/R if a user apt-get installs a package
   &&  echo 'rsession-which-r=/usr/bin/R' >> /etc/rstudio/rserver.conf \
   ## use more robust file locking to avoid errors when using shared volumes:

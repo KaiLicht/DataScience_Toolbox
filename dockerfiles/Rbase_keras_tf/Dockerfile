@@ -36,9 +36,9 @@ ENV LANG en_US.UTF-8
 RUN echo "deb http://http.debian.net/debian sid main" > /etc/apt/sources.list.d/debian-unstable.list \
   	&& echo 'APT::Default-Release "testing";' > /etc/apt/apt.conf.d/default \  
     && gpg --keyserver pgpkeys.mit.edu --recv-key 46925553  \
-    && gpg -a --export 8B48AD6246925553 | apt-key add -  \
-    && gpg --keyserver pgpkeys.mit.edu --recv-key 2B90D010 \
-    && gpg -a --export 2B90D010 | apt-key add -
+    && gpg -a --export 8B48AD6246925553 | apt-key add -  
+    #&& gpg --keyserver pgpkeys.mit.edu --recv-key 2B90D010 \
+    #&& gpg -a --export 2B90D010 | apt-key add -
 
 ## Now install R and littler, and create a link for littler in /usr/local/bin
 ## Also set a default CRAN repo, and make sure littler knows about it too
