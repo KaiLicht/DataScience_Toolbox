@@ -2,9 +2,14 @@ FROM nvcr.io/nvidia/tensorflow:18.02-py3
 
 LABEL maintainer="Kai Lichtenberg <kai@sentin.ai>"
 
+#Arguments
 ARG USER="kai"
 ARG myUID="1000"
 ARG myGID="1000"
+
+#Specifiy R and Keras Version
+ENV R_BASE_VERSION 3.4.4
+ENV KERAS_VERSION=2.1.5
 
 #Set a user 
 RUN groupadd --gid "${myGID}" "${USER}" \
@@ -35,9 +40,6 @@ RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu xenial/" >> etc/apt/sourc
  && gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9 \
  && gpg -a --export E084DAB9 | apt-key add -
 
-#Specifiy R Version
-ENV R_BASE_VERSION 3.4.4
-
 # Install R-base (rocker/r-base with little modification)
 # Now install R and littler, and create a link for littler in /usr/local/bin
 # Also set a default CRAN repo, and make sure littler knows about it too
@@ -66,4 +68,4 @@ RUN install2.r devtools remotes \
   && installGithub.r rstudio/keras \
   && virtualenv --system-site-packages /home/${USER}/.virtualenvs/r-tensorflow --python=python3.5 \
   && source /home/${USER}/.virtualenvs/r-tensorflow/bin/activate \
-  && pip3 --no-cache-dir install git+git://github.com/fchollet/keras.git@2.1.5
+  && pip3 --no-cache-dir install git+git://github.com/fchollet/keras.git@${KERAS_VERSION}
