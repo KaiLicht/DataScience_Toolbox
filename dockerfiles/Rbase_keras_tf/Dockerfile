@@ -1,9 +1,9 @@
-FROM nvcr.io/nvidia/tensorflow:18.02-py3
+FROM nvcr.io/nvidia/tensorflow:18.04-py3
 
 LABEL maintainer="Kai Lichtenberg <kai@sentin.ai>"
 
 #Arguments
-ARG USER="kai"
+ARG USER="docker"
 ARG myUID="1000"
 ARG myGID="1000"
 
@@ -36,7 +36,7 @@ RUN apt-get update \
 	&& rm -rf /var/lib/apt/lists/*
 
 #Add mirror 
-RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu xenial/" >> etc/apt/sources.list \
+RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu xenial/" >> /etc/apt/sources.list \
  && gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9 \
  && gpg -a --export E084DAB9 | apt-key add -
 
