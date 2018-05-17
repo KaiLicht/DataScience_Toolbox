@@ -8,7 +8,7 @@ ARG myUID="1000"
 ARG myGID="1000"
 
 #Specifiy R and Keras Version
-ENV R_BASE_VERSION 3.4.4
+ENV R_BASE_VERSION=3.4.4
 ENV KERAS_VERSION=2.1.5
 
 #Set a user 
@@ -61,11 +61,12 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/* 
 
 #Install tensorflow and keras
-ENV WORKON_HOME /home/${USER}/.virtualenvs
+ENV WORKON_HOME=/home/${USER}/.virtualenvs
 
 RUN install2.r devtools remotes \
   && installGithub.r rstudio/tensorflow \
   && installGithub.r rstudio/keras \
   && virtualenv --system-site-packages /home/${USER}/.virtualenvs/r-tensorflow --python=python3.5 \
-  && source /home/${USER}/.virtualenvs/r-tensorflow/bin/activate \
-  && pip3 --no-cache-dir install git+git://github.com/fchollet/keras.git@${KERAS_VERSION}
+  && /bin/bash -c "cd /home/${USER}/.virtualenvs/r-tensorflow/bin/; \
+     source activate; \
+     pip3 --no-cache-dir install git+git://github.com/fchollet/keras.git@${KERAS_VERSION}"
