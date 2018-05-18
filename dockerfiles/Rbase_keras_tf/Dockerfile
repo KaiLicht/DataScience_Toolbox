@@ -14,50 +14,50 @@ ENV KERAS_VERSION=2.1.5
 #Set a user 
 RUN groupadd --gid "${myGID}" "${USER}" \
   && useradd \
-      --uid ${myUID} \
-      --gid ${myGID} \
-      --create-home \
-      --shell /bin/bash \
-			${USER}
+    --uid ${myUID} \
+    --gid ${myGID} \
+    --create-home \
+    --shell /bin/bash \
+    ${USER}
 
 #Install packages needed
 RUN apt-get update \ 
-	&& apt-get install -y --no-install-recommends \
-		ed \
-		locales \
-		vim-tiny \
-		fonts-texgyre \
+  && apt-get install -y --no-install-recommends \
+    ed \
+    locales \
+    vim-tiny \
+    fonts-texgyre \
     gnupg2 \
     libcurl4-openssl-dev \
     libssl-dev \
     libssh2-1-dev \
     sudo \
-		virtualenv \
-	&& rm -rf /var/lib/apt/lists/*
+    virtualenv \
+  && rm -rf /var/lib/apt/lists/*
 
 #Add mirror 
 RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu xenial/" >> /etc/apt/sources.list \
- && gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9 \
- && gpg -a --export E084DAB9 | apt-key add -
+  && gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9 \
+  && gpg -a --export E084DAB9 | apt-key add -
 
 # Install R-base (rocker/r-base with little modification)
 # Now install R and littler, and create a link for littler in /usr/local/bin
 # Also set a default CRAN repo, and make sure littler knows about it too
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends \
-		littler \
+  && apt-get install -y --no-install-recommends \
+    littler \
     r-cran-littler \
-		r-base=${R_BASE_VERSION}-* \
-		r-base-dev=${R_BASE_VERSION}-* \
+    r-base=${R_BASE_VERSION}-* \
+    r-base-dev=${R_BASE_VERSION}-* \
     r-recommended=${R_BASE_VERSION}-* \
   && echo 'options(repos = c(CRAN = "https://cran.rstudio.com/"), download.file.method = "libcurl")' >> /etc/R/Rprofile.site \
   && echo 'source("/etc/R/Rprofile.site")' >> /etc/littler.r \
-	&& ln -s /usr/share/doc/littler/examples/install.r /usr/local/bin/install.r \
-	&& ln -s /usr/share/doc/littler/examples/install2.r /usr/local/bin/install2.r \
-	&& ln -s /usr/share/doc/littler/examples/installGithub.r /usr/local/bin/installGithub.r \
-	&& ln -s /usr/share/doc/littler/examples/testInstalled.r /usr/local/bin/testInstalled.r \
-	&& install.r docopt \
-	&& rm -rf /tmp/downloaded_packages/ /tmp/*.rds \
+  && ln -s /usr/share/doc/littler/examples/install.r /usr/local/bin/install.r \
+  && ln -s /usr/share/doc/littler/examples/install2.r /usr/local/bin/install2.r \
+  && ln -s /usr/share/doc/littler/examples/installGithub.r /usr/local/bin/installGithub.r \
+  && ln -s /usr/share/doc/littler/examples/testInstalled.r /usr/local/bin/testInstalled.r \
+  && install.r docopt \
+  && rm -rf /tmp/downloaded_packages/ /tmp/*.rds \
   && rm -rf /var/lib/apt/lists/* 
 
 #Install tensorflow and keras
