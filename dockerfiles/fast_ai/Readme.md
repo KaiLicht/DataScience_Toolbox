@@ -56,3 +56,7 @@ Now you can use the following command to start a container from the image. It's 
 ```shell
 docker run --runtime=nvidia -it --rm -v ~/data:/fastai/data -p 8888:8888 kailicht/fastdotai
 ```
+
+
+#### Get updates
+To get updates watch this repo or follow me on [twitter](https://twitter.com/kai_lichtenberg).
