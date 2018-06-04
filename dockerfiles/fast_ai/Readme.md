@@ -30,7 +30,7 @@ apt-get install -y nvidia-docker2 pkill -SIGHUP dockerd
 
 To test if everything is installed correctly you can run `docker run --runtime=nvidia --rm nvidia/cuda nvidia-smi` This downloads a CUDA base image from docker hub and executes `nvidia-smi` inside a container which should display your GPU.
 
-![nvidia-smi]:(https://raw.githubusercontent.com/KaiLicht/DataScience_Toolbox/master/dockerfiles/fast_ai/nvidia-smi.png)
+![nvidia-smi](https://raw.githubusercontent.com/KaiLicht/DataScience_Toolbox/master/dockerfiles/fast_ai/nvidia-smi.png)
 
 ## Get a pre-build pytorch image with GPU support from nvidia
 The nvidia GPU cloud is not a cloud service provider but an image registry similar to docker hub where you can download pre build images for free. The cool thing is: The developer at nvidia took care of all the necessary libraries and tools you need to have. It’s free and you can use the images for your own or commercial purposes, but you are not allowed to redistribute them. Once you are [signed up](https://ngc.nvidia.com/signup/register) select configuration in the menu on the left and generate an API-Key. With this key you can register your docker installation for the nvidia registry. You should save the key somewhere safe. Use the command `docker login nvcr.io` to register. As username you have to use `$oauthtoken` (with the $ sign!) and the API-Key as password. Now to download the pytorch image use the command: `docker pull nvcr.io/nvidia/pytorch:18.05-py3`.
