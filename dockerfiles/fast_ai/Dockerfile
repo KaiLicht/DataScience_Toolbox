@@ -17,4 +17,8 @@ RUN git clone https://github.com/fastai/fastai.git . &&\
 
 ENV PATH /opt/conda/envs/fastai/bin:$PATH
 
+RUN jupyter notebook --generate-config &&\
+    echo "c.NotebookApp.token = ''" >> ~/.jupyter/jupyter_notebook_config.py &&\
+    echo "c.NotebookApp.password = ''" >> ~/.jupyter/jupyter_notebook_config.py
+
 CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--no-browser", "--allow-root"]
