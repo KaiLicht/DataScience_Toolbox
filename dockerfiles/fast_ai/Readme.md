@@ -59,6 +59,13 @@ Now you can use the following command to start a container from the image. It's 
 ```shell
 docker run --runtime=nvidia -it --rm -v ~/data:/fastai/data -p 8888:8888 kailicht/fastdotai
 ```
+Now let's create a `Notebooks` folder in our `data` folder to save Notebooks we create ourselves. Also we have to link the fast.ai library so that we can easily import things:
+```shell
+cd ~
+mkdir data/Notebooks
+ln -s /fastai/fastai/ fastai/data/Notebooks/fastai
+```
+
 
 
 #### Get updates
